@@ -1,0 +1,58 @@
+<html>
+<head>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <div id="app">
+        {{capres}}
+        <p>Anies: {{ capres.anies }}</p>
+        <p>Prabowo: {{ capres.prabowo }}</p>
+        <p>Ganjar: {{ capres.ganjar }}</p>
+    </div>
+</body>
+<script>
+const { createApp, ref } = Vue
+
+createApp({
+
+    data() {
+        
+        return {
+            capres: {
+                'anies': 0,
+                'prabowo': 0,
+                'ganjar': 0,
+            }
+        }
+    },
+
+    mounted: function(){
+
+        setInterval(()=>{
+
+            axios
+                .get('/suara')
+                .then( (response)=>{
+
+                    // handle success
+                    console.log(response.data)
+                    this.capres     = response.data
+                    
+                })
+                .catch(function (error) {
+
+                    // handle error
+                    console.log(error);
+                })
+                .finally(()=>{
+
+                    // always executed
+                });
+                
+        }, 2000)
+    },
+
+}).mount('#app')
+</script>
+</html>
